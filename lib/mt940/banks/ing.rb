@@ -8,7 +8,7 @@ class MT940::ING < MT940::Base
         tag86 = false
       elsif line.match(/^:61:(\d{6})(C|D)(\d+),(\d{2})/)
         type = $2 == 'D' ? -1 : 1
-        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + $4).to_f / 100)
+        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f)
         @transactions << @transaction
         tag86 = false
       elsif line.match(/^:86:\s?(.*)$/)
