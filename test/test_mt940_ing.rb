@@ -4,8 +4,12 @@ class TestMt940Ing < Test::Unit::TestCase
 
   def setup
     file_name = File.dirname(__FILE__) + '/fixtures/ing.txt'
-    transactions = MT940::ING.get_transactions(file_name)
-    @transaction = transactions.first
+    @transactions = MT940::ING.transactions(file_name)
+    @transaction = @transactions.first
+  end
+  
+  should 'have the correct number of transactions' do
+    assert_equal 6, @transactions.size
   end
 
   context 'Transaction' do

@@ -4,10 +4,10 @@ module MT940
 
     attr_accessor :bank_account, :contra_account, :amount, :description
 
-    def initialize(fields = {})
-      @bank_account = fields[:bank_account]
-      @amount       = fields[:amount]
-      @description  = fields[:description]
+    def initialize(attributes = {})
+      @bank_account = attributes[:bank_account]
+      @amount       = attributes[:amount]
+      @description  = attributes[:description]
     end
 
   end
