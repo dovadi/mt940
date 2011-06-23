@@ -6,7 +6,7 @@ class MT940::ING < MT940::Base
       if line.match(/^:25:(\d{10})/)
         @bank_account = $1
         tag86 = false
-      elsif line.match(/^:61:(\d{6})(C|D)(\d+),(\d{2})/)
+      elsif line.match(/^:61:(\d{6})(C|D)(\d+),(\d{0,2})/)
         type = $2 == 'D' ? -1 : 1
         @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f)
         @transactions << @transaction
