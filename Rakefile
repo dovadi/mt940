@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "mt940"
   gem.homepage = "http://github.com/dovadi/mt940"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{MT940 parser}
+  gem.description = %Q{A basic MT940 parser with implementations for Dutch banks.}
   gem.email = "frank.oxener@gmail.com"
   gem.authors = ["dovadi"]
   # dependencies defined in Gemfile
