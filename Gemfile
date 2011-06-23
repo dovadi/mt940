@@ -1,5 +1,5 @@
-# Add dependencies to develop your gem here.
-# Include everything needed to run rake, tests, features, etc.
+source :rubygems
+
 group :development do
   gem "shoulda", ">= 0"
   gem "bundler", "~> 1.0.0"
