@@ -17,16 +17,12 @@ class TestMt940Ing < Test::Unit::TestCase
       assert_equal '0001234567', @transaction.bank_account
     end
 
-    should 'have a contra_account' do
-      assert_equal '0111111111', @transaction.contra_account
-    end
-
     should 'have an amount' do
       assert_equal -25.03, @transaction.amount
     end
-    
+
     should 'have a description' do
-      assert_equal 'ING Bank N.V. inzake TEST EJ004GREENP29052010T1137', @transaction.description
+      assert_equal 'RC AFREKENING BETALINGSVERKEER BETREFT REKENING 4715589 PERIODE: 01-10-2010 / 31-12-2010 ING Bank N.V. tarifering ING', @transaction.description
     end
   end
 
