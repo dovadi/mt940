@@ -4,4 +4,4 @@ $:.unshift(File.dirname(__FILE__)) unless
 require 'mt940/base'
 require 'mt940/transaction'
 require 'mt940/banks/ing'
-
+require 'mt940/banks/rabobank'
