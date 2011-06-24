@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mt940}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["dovadi"]
-  s.date = %q{2011-06-23}
+  s.date = %q{2011-06-24}
   s.description = %q{A basic MT940 parser with implementations for Dutch banks.}
   s.email = %q{frank.oxener@gmail.com}
   s.extra_rdoc_files = [
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    "CHANGELOG",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
@@ -31,12 +32,12 @@ Gem::Specification.new do |s|
     "lib/mt940/banks/triodos.rb",
     "lib/mt940/base.rb",
     "lib/mt940/transaction.rb",
+    "mt940.gemspec",
     "test/fixtures/abnamro.txt",
     "test/fixtures/ing.txt",
     "test/fixtures/rabobank.txt",
     "test/fixtures/triodos.txt",
     "test/helper.rb",
-    "test/test_mt940.rb",
     "test/test_mt940_abnamro.rb",
     "test/test_mt940_ing.rb",
     "test/test_mt940_rabobank.rb",
