@@ -4,7 +4,7 @@ class TestMt940Triodos < Test::Unit::TestCase
 
   def setup
     file_name = File.dirname(__FILE__) + '/fixtures/triodos.txt'
-    @transactions = MT940::Triodos.transactions(file_name)
+    @transactions = MT940::Base.transactions(file_name)
     @transaction = @transactions.first
   end
   

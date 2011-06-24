@@ -3,7 +3,17 @@ module MT940
   class Base
 
     def self.transactions(file_name)
-      instance = self.new(file_name)
+      first_line = File.open(file_name) {|f| f.readline}
+      klass = if first_line.match(/INGBNL/)
+        ING
+      elsif first_line.match(/ABNANL/)
+        Abnamro
+      elsif first_line.match(/^:940:/)
+        Rabobank
+      else
+        self
+      end
+      instance = klass.new(file_name)
       instance.parse
       instance.instance_variable_get('@transactions')
     end
