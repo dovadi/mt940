@@ -1,0 +1,8 @@
+* 0.2.0
+  
+  - General parse method refactored and broke down in individual parse methods per tag
+  - Automatic determination of bank on the base of the first line implemented
+
+* 0.1.0
+  
+  Initial release
