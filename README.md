@@ -13,12 +13,18 @@ The following Dutch banks are implemented:
 Usage
 =====
 
-    `file_name = File.dirname(__FILE__) + 'ing.940'`
+    file_name = File.dirname(__FILE__) + 'ing.940'
 
-    `@transactions = MT940:::Base.transactions(file_name)`
+    @transactions = MT940:::Base.transactions(file_name)
 
-* Independent of the bank, a transaction always consists of an amount and a description. 
-* With some implementations the contra_account with its owner is extracted as well.
+* Independent of the bank, a transaction always consists of:
+
+  - accountnumber
+  - date
+  - amount (which is negative in case of a withdrawal)
+  - description
+
+* With the Rabobank the contra_account with its owner is extracted as well.
 
 
 Contributing to MT940

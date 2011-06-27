@@ -1,3 +1,8 @@
+* 0.3.0
+
+  - Added a date to a transaction
+  - Change transaction attribute name of contra_account_name into contra_account_owner
+
 * 0.2.0
   
   - General parse method refactored and broke down in individual parse methods per tag
