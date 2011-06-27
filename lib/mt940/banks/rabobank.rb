@@ -6,7 +6,7 @@ class MT940::Rabobank < MT940::Base
       @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f)
       @transaction.date = parse_date($1)
       @transaction.contra_account = $5.strip
-      @transaction.contra_account_name = $6.strip
+      @transaction.contra_account_owner = $6.strip
       @transactions << @transaction
     end
   end

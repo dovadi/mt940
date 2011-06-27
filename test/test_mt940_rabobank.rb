@@ -25,8 +25,8 @@ class TestMt940Rabobank < Test::Unit::TestCase
       assert_equal -77.35, @transaction.amount
     end
 
-    should 'have a contra_account_name' do
-      assert_equal 'Uitgeverij De Druif', @transaction.contra_account_name
+    should 'have a contra_account_owner' do
+      assert_equal 'Uitgeverij De Druif', @transaction.contra_account_owner
     end
 
     should 'have a description' do
