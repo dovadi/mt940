@@ -24,6 +24,11 @@ class TestMt940Triodos < Test::Unit::TestCase
     should 'have a description' do
       assert_equal '0000000000000 ALGEMENE TUSSENREKENING KOSTEN VAN 01-10-2010 TOT EN M ET 31-12-20100390123456', @transaction.description
     end
+
+    should 'have a date' do
+      assert_equal Date.new(2011,1,1), @transaction.date
+    end
+
   end
 
 end

@@ -24,6 +24,10 @@ class TestMt940Ing < Test::Unit::TestCase
     should 'have a description' do
       assert_equal 'RC AFREKENING BETALINGSVERKEER BETREFT REKENING 4715589 PERIODE: 01-10-2010 / 31-12-2010 ING Bank N.V. tarifering ING', @transaction.description
     end
+
+    should 'have a date' do
+      assert_equal Date.new(2010,7,22), @transaction.date
+    end
   end
 
 end

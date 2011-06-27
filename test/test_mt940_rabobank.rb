@@ -32,6 +32,11 @@ class TestMt940Rabobank < Test::Unit::TestCase
     should 'have a description' do
       assert_equal 'Factuurnummer 234578', @transaction.description
     end
+
+    should 'have a date' do
+      assert_equal Date.new(2011,6,15), @transaction.date
+    end
+
   end
 
 end

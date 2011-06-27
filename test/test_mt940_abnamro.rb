@@ -24,6 +24,11 @@ class TestMt940Abnamro < Test::Unit::TestCase
     should 'have a description' do
       assert_equal 'GIRO   428428 KPN - DIGITENNE    BETALINGSKENM.  000000042188659 5314606715                       BETREFT FACTUUR D.D. 20-05-2011 INCL. 1,44 BTW', @transaction.description
     end
+
+    should 'have a date' do
+      assert_equal Date.new(2011,5,24), @transaction.date
+    end
+
   end
 
 end
