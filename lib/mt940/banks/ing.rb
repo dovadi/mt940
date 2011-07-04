@@ -1,2 +1,2 @@
-class MT940::ING < MT940::Base
+class MT940::Ing < MT940::Base
 end

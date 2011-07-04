@@ -2,10 +2,16 @@ module MT940
 
   class Base
 
+    attr_accessor :bank
+
     def self.transactions(file)
       file  = File.open(file) if file.is_a?(String) 
       if file.is_a?(File) || file.is_a?(Tempfile)
-        instance = determine_bank(file.readline).new(file)
+        first_line  = file.readline
+        second_line = file.readline unless file.eof?
+        klass       = determine_bank(first_line, second_line)
+        file.rewind
+        instance = klass.new(file)
         file.close
         instance.parse
       else
@@ -24,13 +30,15 @@ module MT940
 
     private
 
-    def self.determine_bank(first_line)
+    def self.determine_bank(first_line, second_line)
       if first_line.match(/INGBNL/)
-        ING
+        Ing
       elsif first_line.match(/ABNANL/)
         Abnamro
       elsif first_line.match(/^:940:/)
         Rabobank
+      elsif first_line.match(/^:20:/) && second_line && second_line.match(/^:25:TRIODOSBANK/)
+        Triodos
       else
         self
       end
@@ -38,6 +46,8 @@ module MT940
 
     def initialize(file)
       @transactions = []
+      @bank  = self.class.to_s.split('::').last
+      @bank  = 'Unknown' if @bank == 'Base'
       @lines = file.readlines
     end
 
@@ -52,7 +62,7 @@ module MT940
     def parse_tag_61
       if @line.match(/^:61:(\d{6})(C|D)(\d+),(\d{0,2})/)
         type = $2 == 'D' ? -1 : 1
-        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f)
+        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f, :bank => @bank)
         @transaction.date = parse_date($1)
         @transactions << @transaction
         @tag86 = false

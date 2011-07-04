@@ -29,6 +29,10 @@ class TestMt940Triodos < Test::Unit::TestCase
       assert_equal Date.new(2011,1,1), @transaction.date
     end
 
+    should 'return its bank' do
+      assert_equal 'Triodos', @transaction.bank
+    end
+
   end
 
 end

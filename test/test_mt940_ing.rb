@@ -28,6 +28,11 @@ class TestMt940Ing < Test::Unit::TestCase
     should 'have a date' do
       assert_equal Date.new(2010,7,22), @transaction.date
     end
+
+    should 'return its bank' do
+      assert_equal 'Ing', @transaction.bank
+    end
+
   end
 
 end

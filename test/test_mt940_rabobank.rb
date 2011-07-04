@@ -37,6 +37,10 @@ class TestMt940Rabobank < Test::Unit::TestCase
       assert_equal Date.new(2011,6,15), @transaction.date
     end
 
+    should 'return its bank' do
+      assert_equal 'Rabobank', @transaction.bank
+    end
+
   end
 
 end
