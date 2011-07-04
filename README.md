@@ -13,9 +13,20 @@ The following Dutch banks are implemented:
 Usage
 =====
 
-    file_name = File.dirname(__FILE__) + 'ing.940'
+With the file name as argument:
+
+    file_name = '/Users/dovadi/Downloads/ing.940'
 
     @transactions = MT940:::Base.transactions(file_name)
+
+or with the file itself:
+
+    file_name = '/Users/dovadi/Downloads/ing.940'
+
+    file = File.open(file_name)
+
+    @transactions = MT940:::Base.transactions(file)
+
 
 * Independent of the bank, a transaction always consists of:
 
