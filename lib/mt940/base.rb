@@ -4,7 +4,7 @@ module MT940
 
     def self.transactions(file)
       file  = File.open(file) if file.is_a?(String) 
-      if file.is_a?(File)
+      if file.is_a?(File) || file.is_a?(Tempfile)
         instance = determine_bank(file.readline).new(file)
         file.close
         instance.parse

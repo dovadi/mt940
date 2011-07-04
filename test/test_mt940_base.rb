@@ -15,6 +15,17 @@ class TestMt940Base < Test::Unit::TestCase
     assert_equal 6, @transactions.size
   end
 
+  #Tempfile is used by Paperclip, so the following will work:
+  #MT940::Base.transactions(@mt940_file.attachment.to_file)
+  should 'read the transactions with the handle of a Tempfile' do
+    file = Tempfile.new('temp')
+    file.write(':940:')
+    file.rewind
+    @transactions = MT940::Base.transactions(file)
+    assert_equal 0, @transactions.size
+    file.unlink
+  end
+
   should 'raise an exception if the file does not exist' do
     file_name = File.dirname(__FILE__) + '/fixtures/123.txt'
     assert_raise Errno::ENOENT do
