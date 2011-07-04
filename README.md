@@ -31,6 +31,7 @@ or with the file itself:
 * Independent of the bank, a transaction always consists of:
 
   - accountnumber
+  - bank (for example Ing, Rabobank or Unknown)
   - date
   - amount (which is negative in case of a withdrawal)
   - description
