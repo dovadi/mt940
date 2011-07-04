@@ -2,20 +2,15 @@ module MT940
 
   class Base
 
-    def self.transactions(file_name)
-      first_line = File.open(file_name) {|f| f.readline}
-      klass = if first_line.match(/INGBNL/)
-        ING
-      elsif first_line.match(/ABNANL/)
-        Abnamro
-      elsif first_line.match(/^:940:/)
-        Rabobank
+    def self.transactions(file)
+      file  = File.open(file) if file.is_a?(String) 
+      if file.is_a?(File)
+        instance = determine_bank(file.readline).new(file)
+        file.close
+        instance.parse
       else
-        self
+        raise ArgumentError.new('No file is given!')
       end
-      instance = klass.new(file_name)
-      instance.parse
-      instance.instance_variable_get('@transactions')
     end
 
     def parse
@@ -29,9 +24,21 @@ module MT940
 
     private
 
-    def initialize(file_name)
+    def self.determine_bank(first_line)
+      if first_line.match(/INGBNL/)
+        ING
+      elsif first_line.match(/ABNANL/)
+        Abnamro
+      elsif first_line.match(/^:940:/)
+        Rabobank
+      else
+        self
+      end
+    end
+
+    def initialize(file)
       @transactions = []
-      @lines = File.readlines(file_name)
+      @lines = file.readlines
     end
 
     def parse_tag_25
