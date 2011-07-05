@@ -1,3 +1,19 @@
+* 0.5.1
+
+  - Delegated determination of bank to corresponding subclass
+
+* 0.5.0
+
+  - Added bank to a transaction
+
+* 0.4.1
+
+  - Handle can be a Tempfile as well
+
+* 0.4.0
+
+  - Also handle to MT940 file possible
+
 * 0.3.0
 
   - Added a date to a transaction
@@ -9,5 +25,5 @@
   - Automatic determination of bank on the base of the first line implemented
 
 * 0.1.0
-  
+
   Initial release
