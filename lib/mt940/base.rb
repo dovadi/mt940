@@ -30,18 +30,15 @@ module MT940
 
     private
 
-    def self.determine_bank(first_line, second_line)
-      if first_line.match(/INGBNL/)
-        Ing
-      elsif first_line.match(/ABNANL/)
-        Abnamro
-      elsif first_line.match(/^:940:/)
-        Rabobank
-      elsif first_line.match(/^:20:/) && second_line && second_line.match(/^:25:TRIODOSBANK/)
-        Triodos
-      else
-        self
+    def self.determine_bank(*args)
+      Dir.foreach('lib/mt940/banks/') do |file|
+        if file.match(/\.rb$/)
+          klass = eval(file.gsub(/\.rb$/,'').capitalize)
+          bank  = klass.determine_bank(*args)
+          return bank if bank
+        end
       end
+      self
     end
 
     def initialize(file)
