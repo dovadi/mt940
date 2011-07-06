@@ -9,7 +9,7 @@ class TestMt940Rabobank < Test::Unit::TestCase
   end
   
   should 'have the correct number of transactions' do
-    assert_equal 2, @transactions.size
+    assert_equal 3, @transactions.size
   end
 
   context 'Transaction' do
@@ -23,7 +23,11 @@ class TestMt940Rabobank < Test::Unit::TestCase
       end
 
       should 'be determined in case of a regular bank' do
-        assert_equal '733959555', @transactions.last.contra_account
+        assert_equal '733959555', @transactions[1].contra_account
+      end
+
+      should 'be determined in case of a NONREF' do
+        assert_equal 'NONREF', @transactions.last.contra_account
       end
     end
 
