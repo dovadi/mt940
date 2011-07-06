@@ -22,7 +22,7 @@ class TestMt940Triodos < Test::Unit::TestCase
     end
 
     should 'have a description' do
-      assert_equal '0000000000000 ALGEMENE TUSSENREKENING KOSTEN VAN 01-10-2010 TOT EN M ET 31-12-20100390123456', @transaction.description
+      assert_equal 'ALGEMENE TUSSENREKENING KOSTEN VAN 01-10-2010 TOT EN M ET 31-12-20100390123456', @transaction.description
     end
 
     should 'have a date' do
@@ -31,6 +31,10 @@ class TestMt940Triodos < Test::Unit::TestCase
 
     should 'return its bank' do
       assert_equal 'Triodos', @transaction.bank
+    end
+
+    should 'return the contra_account' do
+      assert_equal '9876543210', @transaction.contra_account
     end
 
   end

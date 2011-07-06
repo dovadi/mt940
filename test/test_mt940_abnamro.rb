@@ -21,8 +21,14 @@ class TestMt940Abnamro < Test::Unit::TestCase
       assert_equal -9.00, @transaction.amount
     end
 
-    should 'have a description' do
-      assert_equal 'GIRO   428428 KPN - DIGITENNE    BETALINGSKENM.  000000042188659 5314606715                       BETREFT FACTUUR D.D. 20-05-2011 INCL. 1,44 BTW', @transaction.description
+    context 'Description' do
+      should 'have the correct description in case of a GIRO account' do
+        assert_equal 'KPN - DIGITENNE    BETALINGSKENM.  000000042188659 5314606715                       BETREFT FACTUUR D.D. 20-05-2011 INCL. 1,44 BTW', @transaction.description
+      end
+
+      should 'have the correct description in case of a regular bank' do
+        assert_equal 'MYCOM DEN HAAG  S-GRAVEN,PAS999 :62F:C110524EUR1849,75', @transactions.last.description
+      end
     end
 
     should 'have a date' do
@@ -33,6 +39,15 @@ class TestMt940Abnamro < Test::Unit::TestCase
       assert_equal 'Abnamro', @transaction.bank
     end
 
+    context 'Contra account' do
+      should 'be determined in case of a GIRO account' do
+        assert_equal 'P000428428', @transaction.contra_account
+      end
+
+      should 'be determined in case of a regular bank' do
+        assert_equal '52.89.39.882', @transactions.last.contra_account
+      end
+    end
   end
 
 end

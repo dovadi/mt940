@@ -21,16 +21,20 @@ class TestMt940Ing < Test::Unit::TestCase
       assert_equal -25.03, @transaction.amount
     end
 
-    should 'have a description' do
-      assert_equal 'RC AFREKENING BETALINGSVERKEER BETREFT REKENING 4715589 PERIODE: 01-10-2010 / 31-12-2010 ING Bank N.V. tarifering ING', @transaction.description
-    end
-
     should 'have a date' do
       assert_equal Date.new(2010,7,22), @transaction.date
     end
 
     should 'return its bank' do
       assert_equal 'Ing', @transaction.bank
+    end
+
+    should 'have a description' do
+      assert_equal 'EJ46GREENP100610T1456 CLIEOP TMG GPHONGKONG AMSTERDAM :62F:C100723EUR3,47', @transactions.last.description
+    end
+
+    should 'return the contra_account' do
+      assert_equal '0123456789', @transactions.last.contra_account
     end
 
   end

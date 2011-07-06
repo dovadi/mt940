@@ -31,7 +31,7 @@ module MT940
     private
 
     def self.determine_bank(*args)
-      Dir.foreach('lib/mt940/banks/') do |file|
+      Dir.foreach(File.dirname(__FILE__) + '/banks/') do |file|
         if file.match(/\.rb$/)
           klass = eval(file.gsub(/\.rb$/,'').capitalize)
           bank  = klass.determine_bank(*args)
@@ -69,16 +69,24 @@ module MT940
     def parse_tag_86
       if !@tag86 && @line.match(/^:86:\s?(.*)$/)
         @tag86 = true
-        @transaction.description = $1.gsub(/>\d{2}/,'')
+        @transaction.description = $1.gsub(/>\d{2}/,'').strip
+        parse_contra_account
       end
     end
 
     def parse_line
-      @transaction.description += ' ' + @line.gsub(/\n/,'').gsub(/>\d{2}/,'') if @tag86
+      if @tag86 && @transaction.description
+        @transaction.description.lstrip!
+        @transaction.description += ' ' + @line.gsub(/\n/,'').gsub(/>\d{2}\s*/,'').gsub(/\-XXX/,'').gsub(/-$/,'').strip
+        @transaction.description.strip!
+      end
     end
 
     def parse_date(string)
       Date.new(2000 + string[0..1].to_i, string[2..3].to_i, string[4..5].to_i) if string
+    end
+
+    def parse_contra_account
     end
 
     #Fail silently
