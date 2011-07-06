@@ -1,4 +1,8 @@
-* 0.6.2
+* 0.6.3
+
+  - include the updated Changelog and README as well
+
+* 0.6.2 (Was never released)
 
   - Parse a NONREF contra account for the rabobank correctly
 
