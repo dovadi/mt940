@@ -35,8 +35,9 @@ or with the file itself:
   - date
   - amount (which is negative in case of a withdrawal)
   - description
+  - contra account
 
-* With the Rabobank the contra_account with its owner is extracted as well.
+* With the Rabobank its owner is extracted as well.
 
 
 Contributing to MT940

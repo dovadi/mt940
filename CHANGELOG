@@ -1,3 +1,14 @@
+* 0.6.2
+
+  - Parse a NONREF contra account for the rabobank correctly
+
+* 0.6.1 (Was never released)
+
+  - Extracting contra account for ING, AbnAmro and Triodos as well
+  - Standardized all account numbers to exactly 9 digits
+
+* 0.6.0 (Was never released)
+
 * 0.5.1
 
   - Delegated determination of bank to corresponding subclass
