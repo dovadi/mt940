@@ -14,7 +14,7 @@ class TestMt940Triodos < Test::Unit::TestCase
 
   context 'Transaction' do
     should 'have a bank_account' do
-      assert_equal '0390123456', @transaction.bank_account
+      assert_equal '390123456', @transaction.bank_account
     end
 
     should 'have an amount' do
@@ -34,7 +34,7 @@ class TestMt940Triodos < Test::Unit::TestCase
     end
 
     should 'return the contra_account' do
-      assert_equal '9876543210', @transaction.contra_account
+      assert_equal '987654321', @transaction.contra_account
     end
 
   end

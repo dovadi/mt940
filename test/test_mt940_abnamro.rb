@@ -41,11 +41,11 @@ class TestMt940Abnamro < Test::Unit::TestCase
 
     context 'Contra account' do
       should 'be determined in case of a GIRO account' do
-        assert_equal 'P000428428', @transaction.contra_account
+        assert_equal '000428428', @transaction.contra_account
       end
 
       should 'be determined in case of a regular bank' do
-        assert_equal '52.89.39.882', @transactions.last.contra_account
+        assert_equal '528939882', @transactions.last.contra_account
       end
     end
   end

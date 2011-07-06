@@ -5,7 +5,7 @@ class MT940::Rabobank < MT940::Base
   end
 
   def parse_tag_61
-    if @line.match(/^:61:(\d{6})(C|D)(\d+),(\d{0,2})\w{4}(.{16})(.+)$/)
+    if @line.match(/^:61:(\d{6})(C|D)(\d+),(\d{0,2})\w{4}\w{1}(\d{9})(.+)$/)
       type = $2 == 'D' ? -1 : 1
       @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f, :bank => @bank)
       @transaction.date = parse_date($1)

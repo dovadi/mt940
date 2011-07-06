@@ -51,7 +51,7 @@ module MT940
     def parse_tag_25
       @line.gsub!('.','')
       if @line.match(/^:\d{2}:[^\d]*(\d*)/)
-        @bank_account = $1
+        @bank_account = $1.gsub(/^0/,'')
         @tag86 = false
       end
     end

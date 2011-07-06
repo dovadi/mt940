@@ -17,8 +17,14 @@ class TestMt940Rabobank < Test::Unit::TestCase
       assert_equal '129199348', @transaction.bank_account
     end
 
-    should 'have a contra_account' do
-      assert_equal 'P005675159', @transaction.contra_account
+    context 'Contra account' do
+      should 'be determined in case of a GIRO account' do
+        assert_equal '005675159', @transaction.contra_account
+      end
+
+      should 'be determined in case of a regular bank' do
+        assert_equal '733959555', @transactions.last.contra_account
+      end
     end
 
     should 'have an amount' do
