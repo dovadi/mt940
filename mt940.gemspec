@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mt940}
-  s.version = "0.5.1"
+  s.version = "0.6.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["dovadi"]
-  s.date = %q{2011-07-05}
+  s.date = %q{2011-07-06}
   s.description = %q{A basic MT940 parser with implementations for Dutch banks.}
   s.email = %q{frank.oxener@gmail.com}
   s.extra_rdoc_files = [
