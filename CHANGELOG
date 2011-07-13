@@ -1,3 +1,7 @@
+* 0.6.4
+
+  - Fix for multiline description for Rabobank
+
 * 0.6.3
 
   - include the updated Changelog and README as well

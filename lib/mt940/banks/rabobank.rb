@@ -16,7 +16,13 @@ class MT940::Rabobank < MT940::Base
   end
 
   def parse_tag_86
-    @transaction.description = $1.strip if @line.match(/^:86:(.*)$/)
+    if @line.match(/^:86:(.*)$/)
+      if @transaction.description.nil? 
+        @transaction.description= $1.strip 
+      else
+        @transaction.description += ' ' +$1.strip 
+      end
+    end
   end
 
 end
