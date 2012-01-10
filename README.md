@@ -1,8 +1,9 @@
 MT940
 ======
 
-
+<a href='http://travis-ci.org/dovadi/mt940'>
 ![http://travis-ci.org/dovadi/mt940](https://secure.travis-ci.org/dovadi/mt940.png)
+</a>
 
 Basis parser for MT940 files, see [MT940](http://nl.wikipedia.org/wiki/MT940)
 
