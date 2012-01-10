@@ -1,6 +1,9 @@
 MT940
 ======
 
+
+![http://travis-ci.org/dovadi/mt940](https://secure.travis-ci.org/dovadi/mt940.png)
+
 Basis parser for MT940 files, see [MT940](http://nl.wikipedia.org/wiki/MT940)
 
 The following Dutch banks are implemented:
@@ -39,6 +42,12 @@ or with the file itself:
 
 * With the Rabobank its owner is extracted as well.
 
+Running tests
+=============
+
+> bundle install
+
+> bundle exec rake test
 
 Contributing to MT940
 =====================

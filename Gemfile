@@ -1,7 +1,5 @@
-source :rubygems
+source "http://rubygems.org"
 
-group :development do
-  gem "shoulda", ">= 0"
-  gem "bundler", "~> 1.0.0"
-  gem "jeweler", "~> 1.6.2"
-end
+gem 'rake', '0.8.7'
+
+gemspec
