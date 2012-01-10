@@ -1,3 +1,8 @@
+* 0.6.5
+
+  - Use bundler for gem building and release
+  - Add travis configuration
+
 * 0.6.4
 
   - Fix for multiline description for Rabobank
