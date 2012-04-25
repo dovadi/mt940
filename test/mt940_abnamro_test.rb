@@ -27,7 +27,7 @@ class TestMt940Abnamro < Test::Unit::TestCase
       end
 
       should 'have the correct description in case of a regular bank' do
-        assert_equal 'MYCOM DEN HAAG  S-GRAVEN,PAS999 :62F:C110524EUR1849,75', @transactions.last.description
+        assert_equal 'MYCOM DEN HAAG  S-GRAVEN,PAS999', @transactions.last.description
       end
     end
 
@@ -37,6 +37,10 @@ class TestMt940Abnamro < Test::Unit::TestCase
 
     should 'return its bank' do
       assert_equal 'Abnamro', @transaction.bank
+    end
+
+    should 'have a currency' do
+      assert_equal 'EUR', @transaction.currency
     end
 
     context 'Contra account' do

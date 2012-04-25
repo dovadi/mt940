@@ -23,7 +23,7 @@ module MT940
       @tag86 = false
       @lines.each do |line|
         @line = line
-        @line.match(/^:(\d{2}):/) ? eval('parse_tag_'+ $1) : parse_line
+        @line.match(/^:(\d{2}F?):/) ? eval('parse_tag_'+ $1) : parse_line
       end
       @transactions
     end
@@ -56,10 +56,14 @@ module MT940
       end
     end
 
+    def parse_tag_60F
+      @currency = @line[12..14]
+    end
+
     def parse_tag_61
       if @line.match(/^:61:(\d{6})(C|D)(\d+),(\d{0,2})/)
         type = $2 == 'D' ? -1 : 1
-        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f, :bank => @bank)
+        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f, :bank => @bank, :currency => @currency)
         @transaction.date = parse_date($1)
         @transactions << @transaction
         @tag86 = false
