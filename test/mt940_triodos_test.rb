@@ -21,6 +21,10 @@ class TestMt940Triodos < Test::Unit::TestCase
       assert_equal -15.7, @transaction.amount
     end
 
+    should 'have a currency' do
+      assert_equal 'EUR', @transaction.currency
+    end
+
     should 'have a description' do
       assert_equal 'ALGEMENE TUSSENREKENING KOSTEN VAN 01-10-2010 TOT EN M ET 31-12-20100390123456', @transaction.description
     end
