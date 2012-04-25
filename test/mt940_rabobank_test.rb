@@ -35,6 +35,10 @@ class TestMt940Rabobank < Test::Unit::TestCase
       assert_equal -1213.28, @transaction.amount
     end
 
+    should 'have a currency' do
+      assert_equal 'EUR', @transaction.currency
+    end
+
     should 'have a contra_account_owner' do
       assert_equal 'W.P. Jansen', @transaction.contra_account_owner
     end
