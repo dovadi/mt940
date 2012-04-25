@@ -1,3 +1,6 @@
+* 0.6.6
+  - Added currency support in transaction (contribution of Bob Forma)
+
 * 0.6.5
 
   - Use bundler for gem building and release
