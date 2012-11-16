@@ -24,7 +24,7 @@ module MT940
       @tag86 = false
       @lines.each do |line|
         @line = line
-        @line.match(/^:(\d{2}F?):/) ? eval('parse_tag_'+ $1) : parse_line
+        @line.match(/^:(\d{2}F?):/) ? parse_tag($1) : parse_line
       end
       @transactions
     end
@@ -47,6 +47,12 @@ module MT940
       @bank  = self.class.to_s.split('::').last
       @bank  = 'Unknown' if @bank == 'Base'
       @lines = file.readlines
+    end
+
+    def parse_tag(tag)
+      @tag86 = false if tag.to_s != '86'
+      send("parse_tag_#{tag}")
+      parse_contra_account if @transaction && @transaction.description
     end
 
     def parse_tag_25
@@ -72,16 +78,14 @@ module MT940
     end
 
     def parse_tag_86
-      if !@tag86 && @line.match(/^:86:\s?(.*)$/)
+      if !@transaction.description && @line.match(/^:86:\s?(.*)$/)
         @tag86 = true
         @transaction.description = $1.gsub(/>\d{2}/,'').strip
-        parse_contra_account
       end
     end
 
     def parse_line
       if @tag86 && @transaction.description
-        @transaction.description.lstrip!
         @transaction.description += ' ' + @line.gsub(/\n/,'').gsub(/>\d{2}\s*/,'').gsub(/\-XXX/,'').gsub(/-$/,'').strip
         @transaction.description.strip!
       end
