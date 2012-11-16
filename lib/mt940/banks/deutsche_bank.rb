@@ -11,4 +11,9 @@ class MT940::DeutscheBank < MT940::Abnamro
       end
     end
   end
+
+  def parse_tag_62
+    parse_contra_account
+    @tag86 = false
+  end
 end
