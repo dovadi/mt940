@@ -6,7 +6,7 @@ module MT940
     attr_accessor :bank
 
     def self.transactions(file)
-      file  = File.open(file) if file.is_a?(String)
+      file  = File.open(file, 'r:utf-8') if file.is_a?(String)
       if file.is_a?(File) || file.is_a?(Tempfile)
         first_line  = file.readline
         second_line = file.readline unless file.eof?
@@ -34,7 +34,7 @@ module MT940
     def self.determine_bank(*args)
       Dir.foreach(File.dirname(__FILE__) + '/banks/') do |file|
         if file.match(/\.rb$/)
-          klass = eval(file.gsub(/\.rb$/,'').capitalize)
+          klass = eval(file.gsub(/\.rb$/,'').split('_').map{|e| e.capitalize}.join)
           bank  = klass.determine_bank(*args)
           return bank if bank
         end

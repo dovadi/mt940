@@ -11,7 +11,7 @@ class TestMt940Base < Test::Unit::TestCase
 
     should 'read the transactions with the handle to the mt940 file itself' do
       file_name = File.dirname(__FILE__) + '/fixtures/ing.txt'
-      file = File.open(file_name)
+      file = File.open(file_name, 'r:utf-8')
       @transactions = MT940::Base.transactions(file)
       assert_equal 6, @transactions.size
     end
