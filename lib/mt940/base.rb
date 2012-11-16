@@ -84,6 +84,7 @@ module MT940
         @transaction.description.lstrip!
         @transaction.description += ' ' + @line.gsub(/\n/,'').gsub(/>\d{2}\s*/,'').gsub(/\-XXX/,'').gsub(/-$/,'').strip
         @transaction.description.strip!
+        parse_contra_account
       end
     end
 
@@ -96,6 +97,7 @@ module MT940
 
     #Fail silently
     def method_missing(*args)
+      @tag86 = false
     end
   end
 
