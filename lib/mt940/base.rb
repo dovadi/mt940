@@ -1,3 +1,4 @@
+#encoding: utf-8
 module MT940
 
   class Base
@@ -5,7 +6,7 @@ module MT940
     attr_accessor :bank
 
     def self.transactions(file)
-      file  = File.open(file) if file.is_a?(String) 
+      file  = File.open(file) if file.is_a?(String)
       if file.is_a?(File) || file.is_a?(Tempfile)
         first_line  = file.readline
         second_line = file.readline unless file.eof?
@@ -96,7 +97,6 @@ module MT940
     #Fail silently
     def method_missing(*args)
     end
-
   end
 
 end
