@@ -1,6 +1,5 @@
 #encoding: utf-8
 module MT940
-
   class Base
 
     attr_accessor :bank
@@ -52,14 +51,12 @@ module MT940
     def parse_tag(tag)
       @tag86 = false if tag.to_s != '86'
       send("parse_tag_#{tag}")
-      parse_contra_account if @transaction && @transaction.description
     end
 
     def parse_tag_25
       @line.gsub!('.','')
       if @line.match(/^:\d{2}:[^\d]*(\d*)/)
         @bank_account = $1.gsub(/^0/,'')
-        @tag86 = false
       end
     end
 
@@ -73,21 +70,28 @@ module MT940
         @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f, :bank => @bank, :currency => @currency)
         @transaction.date = parse_date($1)
         @transactions << @transaction
-        @tag86 = false
       end
     end
 
     def parse_tag_86
-      if !@transaction.description && @line.match(/^:86:\s?(.*)$/)
+      if @line.match(/^:86:\s?(.*)$/) && parse_tag_86?
         @tag86 = true
-        @transaction.description = $1.gsub(/>\d{2}/,'').strip
+        @transaction.description ||= ''
+        @transaction.description += (@transaction.description == '' ? '' : ' ') + $1.gsub(/>\d{2}/,'')
+        @transaction.description.strip!
+        parse_contra_account
       end
     end
 
+    def parse_tag_86?
+      true
+    end
+
     def parse_line
-      if @tag86 && @transaction.description
+      if @tag86
         @transaction.description += ' ' + @line.gsub(/\n/,'').gsub(/>\d{2}\s*/,'').gsub(/\-XXX/,'').gsub(/-$/,'').strip
         @transaction.description.strip!
+        parse_contra_account
       end
     end
 
@@ -101,6 +105,6 @@ module MT940
     #Fail silently
     def method_missing(*args)
     end
-  end
 
+  end
 end

@@ -1,5 +1,4 @@
 module MT940
-
   class Transaction
 
     attr_accessor :bank_account, :contra_account, :amount, :description, :contra_account_owner, :date, :bank, :currency
@@ -16,5 +15,4 @@ module MT940
     end
 
   end
-
 end

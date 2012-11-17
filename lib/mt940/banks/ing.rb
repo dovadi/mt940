@@ -11,4 +11,7 @@ class MT940::Ing < MT940::Base
      end
   end
 
+  def parse_tag_86?
+    @transaction.description.nil?
+  end
 end
