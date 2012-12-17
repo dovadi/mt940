@@ -6,11 +6,18 @@ class TestMt940Rabobank < Test::Unit::TestCase
     file_name = File.dirname(__FILE__) + '/fixtures/rabobank.txt'
     @transactions = MT940::Base.transactions(file_name)
     @transaction = @transactions.first
+    @statements = MT940::Base.statements(file_name)
+    @statement = @statements.first
   end
 
   should 'have the correct number of transactions' do
     assert_equal 3, @transactions.size
   end
+
+  should 'have the correct number of statements' do
+    assert_equal 3, @statements.size
+  end
+
 
   context 'Transaction' do
     should 'have a bank_account' do
@@ -55,6 +62,48 @@ class TestMt940Rabobank < Test::Unit::TestCase
       assert_equal 'Rabobank', @transaction.bank
     end
 
+  end
+
+  context 'Statements' do
+    should 'have a number' do
+      assert_equal 0, @statement.number
+    end
+
+    should 'have a sequence' do
+      assert_equal 0, @statement.sequence
+    end
+
+    should 'have a bank_account' do
+      assert_equal '129199348', @statement.bank_account
+    end
+
+    should 'have an opening_balance_amount' do
+      assert_equal 473.17, @statement.opening_balance_amount
+    end
+
+    should 'have an opening_balance_date' do
+      assert_equal Date.new(2011, 6, 14), @statement.opening_balance_date
+    end
+
+    should 'have an opening_balance_currency' do
+      assert_equal 'EUR', @statement.opening_balance_currency
+    end
+
+    should 'have an closing_balance_amount' do
+      assert_equal -740.11, @statement.closing_balance_amount
+    end
+
+    should 'have an closing_balance_date' do
+      assert_equal Date.new(2011, 6, 15), @statement.closing_balance_date
+    end
+
+    should 'have an closing_balance_currency' do
+      assert_equal 'EUR', @statement.closing_balance_currency
+    end
+
+    should 'have valid amount' do
+      assert_equal true, @statement.amount_valid
+    end
   end
 
 end

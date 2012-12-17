@@ -5,6 +5,15 @@ module MT940
     attr_accessor :bank
 
     def self.transactions(file)
+      process(file, :transactions)
+    end
+
+    def self.statements(file)
+      process(file, :statements)
+    end
+
+
+    def self.process(file, type)
       file  = File.open(file, 'r:utf-8') if file.is_a?(String)
       if file.is_a?(File) || file.is_a?(Tempfile)
         first_line  = file.readline
@@ -13,18 +22,20 @@ module MT940
         file.rewind
         instance = klass.new(file)
         file.close
-        instance.parse
+        instance.parse(type)
       else
         raise ArgumentError.new('No file is given!')
       end
+
     end
 
-    def parse
+    def parse(type = :transactions)
       @tag86 = false
       @lines.each do |line|
         @line = line
         @line.match(/^:(\d{2}F?):/) ? parse_tag($1) : parse_line
       end
+      return @statements if type == :statements
       @transactions
     end
 
@@ -43,6 +54,8 @@ module MT940
 
     def initialize(file)
       @transactions = []
+      @statements = []
+      @statement_transactions = []
       @bank  = self.class.to_s.split('::').last
       @bank  = 'Unknown' if @bank == 'Base'
       @lines = file.readlines
@@ -60,18 +73,57 @@ module MT940
       end
     end
 
+    def parse_tag_28
+      if @line.match(/^:28:(\d{1,5})\/(\d{1,3})/)
+        @number, @sequence = $1.to_i, $2.to_i
+      end
+    end
+
     def parse_tag_60F
-      @currency = @line[12..14]
+      if @line.match(/^:60F:(C|D)(\d{6})([A-Z]{3})(\d{1,15}),(\d{0,2})/)
+        type = $1 == 'D' ? -1 : 1
+        @opening_balance_amount = type * BigDecimal.new("#{$4}.#{$5}")
+        @opening_balance_currency = $3
+        @opening_balance_date = parse_date($2)
+        @currency = @line[12..14]
+      end
     end
 
     def parse_tag_61
       if @line.match(/^:61:(\d{6})(C|D)(\d+),(\d{0,2})/)
         type = $2 == 'D' ? -1 : 1
-        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f, :bank => @bank, :currency => @currency)
+        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * BigDecimal.new($3 + '.' + $4), :bank => @bank, :currency => @currency)
         @transaction.date = parse_date($1)
+        @statement_transactions << @transaction
         @transactions << @transaction
       end
     end
+
+    def parse_tag_62F
+      if @line.match(/^:62F:(C|D)(\d{6})([A-Z]{3})(\d{1,15}),(\d{0,2})/)
+        type                      = $1 == 'D' ? -1 : 1
+        @closing_balance_date     = parse_date($2)
+        @closing_balance_currency = $3
+        @closing_balance_amount   = type * BigDecimal.new("#{$4}.#{$5}")
+        amount_valid              = (@opening_balance_amount + @statement_transactions.inject(0){|memo, transaction| memo + transaction.amount}) == @closing_balance_amount
+        @statements << MT940::Statement.new(
+          number:                   @number,
+          sequence:                 @sequence,
+          bank:                     @bank,
+          bank_account:             @bank_account,
+          opening_balance_amount:   @opening_balance_amount,
+          opening_balance_currency: @opening_balance_currency,
+          opening_balance_date:     @opening_balance_date,
+          closing_balance_amount:   @closing_balance_amount,
+          closing_balance_currency: @closing_balance_currency,
+          closing_balance_date:     @closing_balance_date,
+          amount_valid:             amount_valid,
+          transactions:             @statement_transactions
+        )
+        @statement_transactions = []
+      end
+    end
+
 
     def parse_tag_86
       if @line.match(/^:86:\s?(.*)$/) && parse_tag_86?
