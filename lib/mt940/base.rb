@@ -5,27 +5,42 @@ module MT940
     attr_accessor :bank, :transactions
 
     def initialize(file)
-      @transactions = []
+      @transactions, @lines = [], []
       @bank  = self.class.to_s.split('::').last
-      @lines = file.readlines
+      file.readlines.each do |line|
+        begin_of_line?(line) ? @lines << line : @lines[-1] += line
+      end
     end
 
     def parse
-      @tag86 = false
       @lines.each do |line|
-        @line = line
-        @line.match(/^:(\d{2}F?):/) ? eval('parse_tag_'+ $1) : parse_line
+        @line = line.strip.gsub(/\n/,'')
+        if @line.match(/^:(\d{2}F?):/)
+          case $1
+          when '25'
+            parse_tag_25
+          when '60F'
+            parse_tag_60F
+          when '61'
+            parse_tag_61
+          when '86'
+            parse_tag_86 if @transaction
+          when '62F'
+            @transaction = nil #ignore eindsaldo
+          end
+        end
       end
     end
 
     private
 
+    def begin_of_line?(line)
+      line.match /^:|^940|^0000\s|^ABNA/
+    end
+
     def parse_tag_25
       @line.gsub!('.','')
-      if @line.match(/^:\d{2}:[^\d]*(\d*)/)
-        @bank_account = $1.gsub(/^0/,'')
-        @tag86 = false
-      end
+      @bank_account = $1.gsub(/^0/,'') if @line.match(/^:\d{2}:[^\d]*(\d*)/)
     end
 
     def parse_tag_60F
@@ -39,23 +54,13 @@ module MT940
         @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f, :bank => @bank, :currency => @currency)
         @transaction.date = parse_date($1)
         @transactions << @transaction
-        @tag86 = false
       end
     end
 
     def parse_tag_86
-      if !@tag86 && @line.match(/^:86:\s?(.*)$/)
-        @tag86 = true
-        @transaction.description = $1.gsub(/>\d{2}/,'').strip
+      if @line.match(/^:86:\s?(.*)$/)
+        @transaction.description = $1.strip
         parse_contra_account
-      end
-    end
-
-    def parse_line
-      if @tag86 && @transaction.description
-        @transaction.description.lstrip!
-        @transaction.description += ' ' + @line.gsub(/\n/,'').gsub(/>\d{2}\s*/,'').gsub(/\-XXX/,'').gsub(/-$/,'').strip
-        @transaction.description.strip!
       end
     end
 
