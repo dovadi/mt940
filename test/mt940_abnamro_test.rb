@@ -29,11 +29,11 @@ class TestMt940Abnamro < Test::Unit::TestCase
 
       context 'Description' do
         should 'have the correct description in case of a GIRO account' do
-          assert_equal 'KPN - DIGITENNE    BETALINGSKENM.  000000042188659 5314606715                       BETREFT FACTUUR D.D. 20-05-2011 INCL. 1,44 BTW', @transaction.description
+          assert_equal ' KPN - DIGITENNE    BETALINGSKENM.  0000000421886595314606715                       BETREFT FACTUUR D.D. 20-05-2011INCL. 1,44 BTW', @transaction.description
         end
 
         should 'have the correct description in case of a regular bank' do
-          assert_equal 'MYCOM DEN HAAG  S-GRAVEN,PAS999', @transactions.last.description
+          assert_equal ' MYCOM DEN HAAG  S-GRAVEN,PAS999', @transactions.last.description
         end
       end
 
@@ -71,6 +71,38 @@ class TestMt940Abnamro < Test::Unit::TestCase
     
     should 'have the correct number of transactions' do
       assert_equal 1, @transactions.size
+    end
+
+    context 'Transaction' do
+
+      setup do 
+        @transaction = @transactions.first
+      end
+
+      should 'have a bank_account' do
+        assert_equal '123456789', @transaction.bank_account
+      end
+
+      should 'have a date' do
+        assert_equal Date.new(2012,9,27), @transaction.date
+      end
+
+      should 'have an amount' do
+        assert_equal 0.01, @transaction.amount
+      end
+
+      should 'return its bank' do
+        assert_equal 'Abnamro', @transaction.bank
+      end
+
+      should 'have a currency' do
+        assert_equal 'EUR', @transaction.currency
+      end
+
+      should 'have the correct description in case of a regular bank' do
+        assert_equal '/TRTP/IDEAL/IBAN/NL73ANDL0123456789/BIC/ANDLNL20/NAME/NAAMXXX 1/REMI/0030000322071306 18-06-12 21*09/EREF/INNDNL2U20000100134824001/ORDP//ID/1234567890AQCDEFGHIJ1234567890KLMNO', @transactions.last.description
+      end
+
     end
 
   end
