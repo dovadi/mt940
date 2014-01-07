@@ -2,10 +2,9 @@ require 'helper'
 
 class TestMt940Triodos < Test::Unit::TestCase
 
-  def setup
+  setup do
     file_name = File.dirname(__FILE__) + '/fixtures/triodos.txt'
-    @transactions = MT940::Base.transactions(file_name)
-    @transaction = @transactions.first
+    @transactions = MT940::Parser.new(file_name).transactions
   end
   
   should 'have the correct number of transactions' do
@@ -13,6 +12,11 @@ class TestMt940Triodos < Test::Unit::TestCase
   end
 
   context 'Transaction' do
+
+    setup do
+      @transaction = @transactions.first
+    end
+
     should 'have a bank_account' do
       assert_equal '390123456', @transaction.bank_account
     end

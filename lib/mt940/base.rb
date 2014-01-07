@@ -2,21 +2,12 @@ module MT940
 
   class Base
 
-    attr_accessor :bank
+    attr_accessor :bank, :transactions
 
-    def self.transactions(file)
-      file  = File.open(file) if file.is_a?(String) 
-      if file.is_a?(File) || file.is_a?(Tempfile)
-        first_line  = file.readline
-        second_line = file.readline unless file.eof?
-        klass       = determine_bank(first_line, second_line)
-        file.rewind
-        instance = klass.new(file)
-        file.close
-        instance.parse
-      else
-        raise ArgumentError.new('No file is given!')
-      end
+    def initialize(file)
+      @transactions = []
+      @bank  = self.class.to_s.split('::').last
+      @lines = file.readlines
     end
 
     def parse
@@ -25,28 +16,9 @@ module MT940
         @line = line
         @line.match(/^:(\d{2}F?):/) ? eval('parse_tag_'+ $1) : parse_line
       end
-      @transactions
     end
 
     private
-
-    def self.determine_bank(*args)
-      Dir.foreach(File.dirname(__FILE__) + '/banks/') do |file|
-        if file.match(/\.rb$/)
-          klass = eval(file.gsub(/\.rb$/,'').capitalize)
-          bank  = klass.determine_bank(*args)
-          return bank if bank
-        end
-      end
-      self
-    end
-
-    def initialize(file)
-      @transactions = []
-      @bank  = self.class.to_s.split('::').last
-      @bank  = 'Unknown' if @bank == 'Base'
-      @lines = file.readlines
-    end
 
     def parse_tag_25
       @line.gsub!('.','')
@@ -89,9 +61,6 @@ module MT940
 
     def parse_date(string)
       Date.new(2000 + string[0..1].to_i, string[2..3].to_i, string[4..5].to_i) if string
-    end
-
-    def parse_contra_account
     end
 
     #Fail silently
