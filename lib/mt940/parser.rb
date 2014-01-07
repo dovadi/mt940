@@ -16,8 +16,12 @@ module MT940
           instance   = bank_class.new(file)
           instance.parse
           @transactions = instance.transactions
-         rescue
-           raise UnknownBank.new('Could not determine bank!')
+        rescue NoMethodError => exception
+           if exception.message == "undefined method `new' for nil:NilClass"
+            raise UnknownBank.new('Could not determine bank!') 
+          else
+            raise exception
+          end
         end
 
         file.close
