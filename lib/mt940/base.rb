@@ -26,7 +26,7 @@ module MT940
           when '86'
             parse_tag_86 if @transaction
           when '62F'
-            @transaction = nil #ignore eindsaldo
+            @transaction = nil #Ignore 'eindsaldo'
           end
         end
       end
@@ -60,16 +60,12 @@ module MT940
     def parse_tag_86
       if @line.match(/^:86:\s?(.*)$/)
         @transaction.description = $1.strip
-        parse_contra_account
+        determine_contra_account
       end
     end
 
     def parse_date(string)
       Date.new(2000 + string[0..1].to_i, string[2..3].to_i, string[4..5].to_i) if string
-    end
-
-    #Fail silently
-    def method_missing(*args)
     end
 
   end

@@ -17,12 +17,12 @@ class MT940::Abnamro < MT940::Base
   def parse_description
     if @description[0] == "/"
     else
-      parse_contra_account
+      determine_contra_account
     end
     @transaction.description = @description
   end
 
-  def parse_contra_account
+  def determine_contra_account
     if @transaction
       if @description.match(/^(GIRO)\s+(\d+)(.+)/)
         @transaction.contra_account = $2.rjust(9, '000000000')
