@@ -5,9 +5,9 @@ MT940
 ![http://travis-ci.org/dovadi/mt940](https://secure.travis-ci.org/dovadi/mt940.png)
 </a>
 
-Basis parser for MT940 files, see [MT940](http://nl.wikipedia.org/wiki/MT940)
+Basis parser for MT940 files, see [MT940](http://nl.wikipedia.org/wiki/MT940). This library is only meant for collection the transactions. No bank statements or balance (previous or new) is determined.
 
-The following Dutch banks are implemented:
+The following Dutch banks are implemented with support for IBAN numbers:
 
 * ABN Amro
 * ING
@@ -34,8 +34,8 @@ or with the file itself:
 
 * Independent of the bank, a transaction always consists of:
 
-  - accountnumber
-  - bank (for example Ing, Rabobank or Unknown)
+  - accountnumber (BBAN or IBAN)
+  - bank (for example Ing, Rabobank etc )
   - date
   - amount (which is negative in case of a withdrawal)
   - description
