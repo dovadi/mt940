@@ -99,8 +99,12 @@ class TestMt940Abnamro < Test::Unit::TestCase
         assert_equal 'EUR', @transaction.currency
       end
 
+      should 'be determined in case of a GIRO account' do
+        assert_equal 'NL73ANDL0123456789', @transaction.contra_account
+      end
+
       should 'have the correct description in case of a regular bank' do
-        assert_equal '/TRTP/IDEAL/IBAN/NL73ANDL0123456789/BIC/ANDLNL20/NAME/NAAMXXX 1/REMI/0030000322071306 18-06-12 21*09/EREF/INNDNL2U20000100134824001/ORDP//ID/1234567890AQCDEFGHIJ1234567890KLMNO', @transactions.last.description
+        assert_equal 'Dit zijn de omschrijvingsregels', @transactions.last.description
       end
 
     end
