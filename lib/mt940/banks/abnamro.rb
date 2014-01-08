@@ -17,22 +17,28 @@ class MT940::Abnamro < MT940::Base
 
   def parse_line_pre_sepa
     @description = @line.gsub(/>\d{2}/,'').strip
-    if @transaction
-      if @description.match(/^(GIRO)\s+(\d+)(.+)/)
-        @contra_account = $2.rjust(9, '000000000')
-        @description    = $3
-      elsif @description.match(/^(\d{2}.\d{2}.\d{2}.\d{3})(.+)/)
-        @description    = $2
-        @contra_account = $1.gsub('.','')
-      end
+    if @description.match(/^(GIRO)\s+(\d+)(.+)/)
+      @contra_account = $2.rjust(9, '000000000')
+      @description    = $3
+    elsif @description.match(/^(\d{2}.\d{2}.\d{2}.\d{3})(.+)/)
+      @description    = $2
+      @contra_account = $1.gsub('.','')
     end
   end
 
   def parse_line_after_sepa
+    hash = hashify_line
+    @description    = hash['REMI']
+    @contra_account = hash['IBAN']
+  end
+
+  def hashify_line
+    hash = {} 
     @line.gsub!(/[^A-Z]\/[^A-Z]/,' ') #Remove single forward slashes '/', which are not part of a swift code
-    @line = @line[1..-1].split('/').each_slice(2).to_h
-    @description = @line['REMI']
-    @contra_account = @line['IBAN']
+    @line[1..-1].split('/').each_slice(2).each do |first, second|
+      hash[first] = second
+    end
+    hash
   end
 
   def sepa?
