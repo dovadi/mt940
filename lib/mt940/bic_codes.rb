@@ -1,4 +1,4 @@
-module Mt940
+module MT940
 
   BIC_CODES =
 

@@ -21,7 +21,7 @@ class MT940::Triodos < MT940::Base
   end
 
   def bic_code?(text)
-     Mt940::BIC_CODES.values.include?(text)
+     MT940::BIC_CODES.values.include?(text)
   end
 
   def hashify_description(description)

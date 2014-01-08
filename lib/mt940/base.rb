@@ -1,5 +1,10 @@
 module MT940
 
+  BBAN_PATTERN     = '^\d{10}'
+  IBAN_PATTERN     = 'NL\d{2}[A-Z]{4}\d{10}'
+  BIC_CODE_PATTERN = MT940::BIC_CODES.values.join('|')
+  SEPA_PATTERN     = Regexp.new "(#{BBAN_PATTERN})\\s+(#{IBAN_PATTERN})\\s+(#{BIC_CODE_PATTERN})(.+)$"
+
   class Base
 
     attr_accessor :bank, :transactions
@@ -59,8 +64,10 @@ module MT940
 
     def parse_tag_86
       if @line.match(/^:86:\s?(.*)$/)
-        @transaction.description = $1.strip
-        determine_contra_account
+        @line = $1.strip
+        sepa? ? parse_line_after_sepa : parse_line_before_sepa
+        @transaction.contra_account = @contra_account
+        @transaction.description    = @description
       end
     end
 
