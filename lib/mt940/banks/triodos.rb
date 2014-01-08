@@ -4,13 +4,7 @@ class MT940::Triodos < MT940::Base
 
   def parse_tag_86
     if @line.match(/^:86:000(.*)$/)
-      
-      sliced_description = $1.split('>')
-      processed_description = {}
-      $1.split('>').compact.each do |slice|
-        next if slice.empty?
-        processed_description[slice[0..1]] = slice[2..-1]
-      end
+      processed_description = hashify_description($1)
 
       if bic_code?(processed_description['20'])
 
@@ -23,12 +17,20 @@ class MT940::Triodos < MT940::Base
       end
 
       @transaction.contra_account = processed_description['10'][/[^0+]\d*/]
-
     end
   end
 
   def bic_code?(text)
      Mt940::BIC_CODES.values.include?(text)
+  end
+
+  def hashify_description(description)
+    hash = {}
+    description.split('>').compact.each do |slice|
+      next if slice.empty?
+      hash[slice[0..1]] = slice[2..-1]
+    end
+    hash
   end
 
 end
