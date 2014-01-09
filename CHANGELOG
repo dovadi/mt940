@@ -1,7 +1,7 @@
 * 0.7.0
   - No support for Ruby 1.8.7, default 2.1.0
   - I was uncomfortable with using class methods, so I introduced the Mt940::Parser and refactored. See Readme
-  - Prepare for SEPA
+  - Parser now works for mt940 files after SEPA was introduced (with the so called structured export format)
 
 * 0.6.6
   - Added currency support in transaction (contribution of Bob Forma)
