@@ -49,4 +49,3 @@ class MT940::Rabobank < MT940::Base
   end
 
 end
-

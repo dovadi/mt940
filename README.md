@@ -41,7 +41,7 @@ or with the file itself:
   - description
   - contra account
 
-* With the Rabobank its owner is extracted as well.
+  (Pre sepa: with the Rabobank the contra_account owner is extracted as well)
 
 Running tests
 =============
