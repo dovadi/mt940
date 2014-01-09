@@ -6,22 +6,27 @@ class MT940::Triodos < MT940::Base
     if @line.match(/^:86:000(.*)$/)
       processed_description = hashify_description($1)
 
-      if bic_code?(processed_description['20'])
-
+      @transaction.contra_account = if sepa?(processed_description)
+        processed_description['21']
       else
-        description = ''
-        processed_description.each do |k,v|
-          description += v if k[0] == '2'
-        end
-        @transaction.description = description
+        processed_description['10'][/[^0+]\d*/]
       end
 
-      @transaction.contra_account = processed_description['10'][/[^0+]\d*/]
+      @transaction.description = extract_description(processed_description)
     end
   end
 
   def bic_code?(text)
      MT940::BIC_CODES.values.include?(text)
+  end
+
+  def extract_description(text)
+    identifier = sepa?(text) ? 22 : 20
+    description = ''
+    text.each do |k,v|
+      description += v if k.to_i >= identifier && k.to_i < 30
+    end
+    description
   end
 
   def hashify_description(description)
@@ -31,6 +36,10 @@ class MT940::Triodos < MT940::Base
       hash[slice[0..1]] = slice[2..-1]
     end
     hash
+  end
+
+  def sepa?(text)
+    text['10'] == '0000000000'
   end
 
 end
