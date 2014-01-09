@@ -11,7 +11,7 @@ module MT940
 
     def initialize(file)
       @transactions, @lines = [], []
-      @bank  = self.class.to_s.split('::').last
+      @bank = self.class.to_s.split('::').last
       file.readlines.each do |line|
         begin_of_line?(line) ? @lines << line : @lines[-1] += line
       end
@@ -28,6 +28,7 @@ module MT940
             parse_tag_60F
           when '61'
             parse_tag_61
+            @transactions << @transaction if @transaction
           when '86'
             parse_tag_86 if @transaction
           when '62F'
@@ -54,12 +55,12 @@ module MT940
 
     def parse_tag_61(pattern = nil)
       pattern = pattern || /^:61:(\d{6})(C|D)(\d+),(\d{0,2})/
-      if @line.match(pattern)
-        type = $2 == 'D' ? -1 : 1
-        @transaction = MT940::Transaction.new(:bank_account => @bank_account, :amount => type * ($3 + '.' + $4).to_f, :bank => @bank, :currency => @currency)
-        @transaction.date = parse_date($1)
-        @transactions << @transaction
+      match = @line.match(pattern)
+      if match
+        @transaction = create_transaction(match)
+        @transaction.date = parse_date(match[1])
       end
+      match
     end
 
     def parse_tag_86
@@ -69,6 +70,23 @@ module MT940
         @transaction.contra_account = @contra_account
         @transaction.description    = @description
       end
+    end
+
+    def hashify_description(description)
+      hash = {} 
+      description.gsub!(/[^A-Z]\/[^A-Z]/,' ') #Remove single forward slashes '/', which are not part of a swift code
+      description[1..-1].split('/').each_slice(2).each do |first, second|
+        hash[first] = second
+      end
+      hash
+    end
+
+    def create_transaction(match)
+      type = match[2] == 'D' ? -1 : 1
+      MT940::Transaction.new(:bank_account => @bank_account,
+                             :amount       => type * (match[3] + '.' + match[4]).to_f,
+                             :bank         => @bank,
+                             :currency     => @currency)
     end
 
     def parse_date(string)

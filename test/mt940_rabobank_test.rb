@@ -84,7 +84,6 @@ class TestMt940Rabobank < Test::Unit::TestCase
         assert_equal 'NL50RABO0123456789', @transaction.bank_account
       end
 
-
       context 'Contra account' do
         should 'be determined in case of a GIRO account' do
           assert_equal 'NL96RBOS0523149468', @transaction.contra_account
@@ -111,9 +110,9 @@ class TestMt940Rabobank < Test::Unit::TestCase
         assert !@transaction.contra_account_owner
       end
 
-      # should 'have a description' do
-      #   assert_equal 'Terugboeking NIET AKKOORD MET AFSCHRIJVING KOSTEN KINDEROPVANG JUNI 20095731', @transaction.description
-      # end
+      should 'have a description' do
+        assert_equal 'DIVV afd parkeergebouwewn Factuur 307472', @transactions[4].description
+      end
 
       should 'have a date' do
         assert_equal Date.new(2013,4,3), @transaction.date
@@ -126,6 +125,5 @@ class TestMt940Rabobank < Test::Unit::TestCase
     end
 
   end
-
 
 end
