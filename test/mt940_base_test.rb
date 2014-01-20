@@ -40,5 +40,40 @@ class TestMt940Base < Test::Unit::TestCase
       end
     end
   end
+  
+  
+  context 'MT940::Account' do
+
+    setup do
+      # Fixture contains a mixture of transactions with and without iban numbers
+      file_name = File.dirname(__FILE__) + '/fixtures/ing_sepa.txt'
+      @parser = MT940::Parser.new(file_name)
+      @transactions = @parser.transactions
+    end
+
+    should 'have the correct accountnumber' do
+      assert_equal "654321789", @parser.account.number
+    end
+
+    should 'have the correct currency' do
+      assert_equal "EUR", @parser.account.currency
+    end
+
+    should 'have the correct opening balance' do
+      assert_equal "2012-08-10", @parser.account.opening_balance.date.to_s
+      assert_equal 68.20 , @parser.account.opening_balance.amount
+    end
+ 
+    should 'have the correct closing balance' do
+      assert_equal "2012-08-11", @parser.account.closing_balance.date.to_s
+      assert_equal 1005.83 , @parser.account.closing_balance.amount
+    end
+
+    # the difference between the opening and closing balance should equal the net change of transactions
+    should 'calculate the correct difference between the opening and closing balance' do
+      assert_equal @transactions.map(&:amount).reduce(:+), @parser.account.closing_balance.amount - @parser.account.opening_balance.amount
+    end
+    
+  end
 
 end
