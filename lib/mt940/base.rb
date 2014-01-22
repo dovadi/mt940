@@ -101,10 +101,12 @@ module MT940
 
     def create_transaction(match)
       type = match[2] == 'D' ? -1 : 1
-      MT940::Transaction.new(:bank_account => @bank_account,
-                             :amount       => type * (match[3] + '.' + match[4]).to_f,
-                             :bank         => @bank,
-                             :currency     => @currency)
+      MT940::Transaction.new(
+        :bank_account => @bank_account,
+        :amount       => type * (match[3] + '.' + match[4]).to_f,
+        :bank         => @bank,
+        :currency     => @currency
+      )
     end
 
     def parse_date(string)
