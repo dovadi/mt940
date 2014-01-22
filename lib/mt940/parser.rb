@@ -5,7 +5,7 @@ module MT940
 
   class Parser
 
-    attr_accessor :transactions
+    attr_accessor :transactions, :account
 
     def initialize(file)
       file = File.open(file) if file.is_a?(String) 
@@ -25,6 +25,7 @@ module MT940
         instance   = bank_class.new(file)
         instance.parse
         @transactions = instance.transactions
+        @account = instance.account
       rescue NoMethodError => exception
          if exception.message == "undefined method `new' for nil:NilClass"
           raise UnknownBank.new('Could not determine bank!') 

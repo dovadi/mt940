@@ -10,6 +10,7 @@ class MT940::Rabobank < MT940::Base
     else
       @bank_account = $1.gsub(/^0/,'') if @line.match(/^:\d{2}:[^\d]*(\d*)/)
     end
+    @account.number = @bank_account
   end
 
   def parse_tag_61

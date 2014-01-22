@@ -7,11 +7,13 @@ module MT940
 
   class Base
 
-    attr_accessor :bank, :transactions
+    attr_accessor :bank, :transactions, :account
 
     def initialize(file)
       @transactions, @lines = [], []
       @bank = self.class.to_s.split('::').last
+      @account = MT940::Account.new
+      
       file.readlines.each do |line|
         begin_of_line?(line) ? @lines << line : @lines[-1] += line
       end
@@ -32,7 +34,7 @@ module MT940
           when '86'
             parse_tag_86 if @transaction
           when '62F'
-            @transaction = nil #Ignore 'eindsaldo'
+            parse_tag_62F
           end
         end
       end
@@ -47,12 +49,27 @@ module MT940
     def parse_tag_25
       @line.gsub!('.','')
       @bank_account = $1.gsub(/^0/,'') if @line.match(/^:\d{2}:[^\d]*(\d*)/)
+      @account.number = @bank_account
     end
 
+    # opening balance
     def parse_tag_60F
-      @currency = @line[12..14]
+      debet_credit = @line[5].eql?("D") ? -1 : 1
+      @account.opening_balance.date = Date.strptime(@line[6..11], "%y%m%d")
+      @account.opening_balance.amount = debet_credit * @line[15..-1].gsub(',', '.').to_f
+      @account.currency = @line[12..14]
+      @currency = @account.currency
     end
 
+    # closing balance
+    def parse_tag_62F
+      debet_credit = @line[5].eql?("D") ? -1 : 1
+      @account.closing_balance.date = Date.strptime(@line[6..11], "%y%m%d")
+      @account.closing_balance.amount = debet_credit * @line[15..-1].gsub(',', '.').to_f
+      @account.currency = @line[12..14]
+      @currency = @account.currency
+    end
+    
     def parse_tag_61(pattern = nil)
       pattern = pattern || /^:61:(\d{6})(C|D)(\d+),(\d{0,2})/
       match = @line.match(pattern)
@@ -72,6 +89,7 @@ module MT940
       end
     end
 
+
     def hashify_description(description)
       hash = {} 
       description.gsub!(/[^A-Z]\/[^A-Z]/,' ') #Remove single forward slashes '/', which are not part of a swift code
@@ -83,10 +101,12 @@ module MT940
 
     def create_transaction(match)
       type = match[2] == 'D' ? -1 : 1
-      MT940::Transaction.new(:bank_account => @bank_account,
-                             :amount       => type * (match[3] + '.' + match[4]).to_f,
-                             :bank         => @bank,
-                             :currency     => @currency)
+      MT940::Transaction.new(
+        :bank_account => @bank_account,
+        :amount       => type * (match[3] + '.' + match[4]).to_f,
+        :bank         => @bank,
+        :currency     => @currency
+      )
     end
 
     def parse_date(string)
