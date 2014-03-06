@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mt940 (0.7.0)
+    mt940 (0.7.1)
 
 GEM
   remote: http://rubygems.org/
