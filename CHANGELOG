@@ -1,3 +1,7 @@
+* 0.7.1
+  - Small fix, prevent invalid byte sequence in UTF-8 while reading mt940 file
+  - Replace more than two or more spaces with only one 
+
 * 0.7.0
   - No support for Ruby 1.8.7, default 2.1.0
   - I was uncomfortable with using class methods, so I introduced the Mt940::Parser and refactored. See Readme
