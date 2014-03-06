@@ -29,11 +29,11 @@ class TestMt940Abnamro < Test::Unit::TestCase
 
       context 'Description' do
         should 'have the correct description in case of a GIRO account' do
-          assert_equal ' KPN - DIGITENNE    BETALINGSKENM.  0000000421886595314606715                       BETREFT FACTUUR D.D. 20-05-2011INCL. 1,44 BTW', @transaction.description
+          assert_equal ' KPN - DIGITENNE BETALINGSKENM. 0000000421886595314606715 BETREFT FACTUUR D.D. 20-05-2011INCL. 1,44 BTW', @transaction.description
         end
 
         should 'have the correct description in case of a regular bank' do
-          assert_equal ' MYCOM DEN HAAG  S-GRAVEN,PAS999', @transactions.last.description
+          assert_equal ' MYCOM DEN HAAG S-GRAVEN,PAS999', @transactions.last.description
         end
       end
 

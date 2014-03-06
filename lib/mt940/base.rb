@@ -13,13 +13,14 @@ module MT940
       @transactions, @lines = [], []
       @bank = self.class.to_s.split('::').last
       file.readlines.each do |line|
+        line.encode!('UTF-8', 'UTF-8', :invalid => :replace)
         begin_of_line?(line) ? @lines << line : @lines[-1] += line
       end
     end
 
     def parse
       @lines.each do |line|
-        @line = line.strip.gsub(/\n/,'')
+        @line = line.strip.gsub(/\n|\r/,'').gsub(/\s{2,}/,' ')
         if @line.match(/^:(\d{2}F?):/)
           case $1
           when '25'
@@ -41,7 +42,7 @@ module MT940
     private
 
     def begin_of_line?(line)
-      line.match /^:\d{2}F?:|^940|^0000\s|^ABNA/
+      line.match /^:|^940|^0000\s|^ABNA/
     end
 
     def parse_tag_25
