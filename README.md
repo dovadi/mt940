@@ -1,5 +1,5 @@
-MT940
-======
+MT940 (Dutch banks only)
+========================
 
 <a href='http://travis-ci.org/dovadi/mt940'>
 ![http://travis-ci.org/dovadi/mt940](https://secure.travis-ci.org/dovadi/mt940.png)
