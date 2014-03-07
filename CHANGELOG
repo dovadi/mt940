@@ -1,3 +1,7 @@
+* 0.8.0
+  - BUG FIX: correct parsing of tag 86 ING in case it doesn't contain an IBAN number
+  - Now with a more general IBAN regexp pattern
+
 * 0.7.1
   - Small fix, prevent invalid byte sequence in UTF-8 while reading mt940 file
   - Replace more than two or more spaces with only one 
