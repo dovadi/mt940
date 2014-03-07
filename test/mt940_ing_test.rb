@@ -57,7 +57,7 @@ class TestMt940Ing < Test::Unit::TestCase
     end
     
     should 'have the correct number of transactions' do
-      assert_equal 8, @transactions.size
+      assert_equal 9, @transactions.size
     end
 
     context 'Transaction' do
@@ -86,12 +86,24 @@ class TestMt940Ing < Test::Unit::TestCase
         assert_equal 'Ing', @transaction.bank
       end
 
-      should 'have a description' do
-        assert_equal 'J. Janssen 20120123456789 Factuurnr 123456 Klantnr 00123', @transactions[1].description
+      context 'With an iban number in :86' do
+        should 'have a description' do
+          assert_equal 'J. Janssen 20120123456789 Factuurnr 123456 Klantnr 00123', @transactions[1].description
+        end
+
+        should 'return the contra_account' do
+          assert_equal 'NL69INGB0123456789', @transactions[1].contra_account
+        end
       end
 
-      should 'return the contra_account' do
-        assert_equal 'NL69INGB0123456789', @transactions[1].contra_account
+      context 'Without an iban number in :86' do
+        should 'have a description' do
+          assert_equal 'Reguliere aflossingStarters Investeri 11.22.33.444 Rest hoofdsom EUR 99.000,00', @transactions[8].description
+        end
+
+        should 'return the contra_account' do
+          assert_equal nil, @transactions[8].contra_account
+        end
       end
 
     end

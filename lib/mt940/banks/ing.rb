@@ -12,7 +12,7 @@ class MT940::Ing < MT940::Base
 
   def parse_line_after_sepa
     if @line.match(MT940::SEPA_PATTERN)
-      @contra_account = $2
+      @contra_account = $1
       @description    = $4.strip
     end
   end
