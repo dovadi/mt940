@@ -1,9 +1,12 @@
 MT940 (Dutch banks only)
 ========================
 
-<a href='http://travis-ci.org/dovadi/mt940'>
-![http://travis-ci.org/dovadi/mt940](https://secure.travis-ci.org/dovadi/mt940.png)
-</a>
+
+[![Travis CI](https://secure.travis-ci.org/dovadi/mt940.png)](http://travis-ci.org/dovadi/mt940)
+
+[![Code Climate](https://codeclimate.com/github/dovadi/mt940.png)](https://codeclimate.com/github/dovadi/mt940)
+
+[![Code Climate](https://codeclimate.com/github/dovadi/mt940/coverage.png)](https://codeclimate.com/github/dovadi/mt940)
 
 Basis parser for MT940 files, see [MT940](http://nl.wikipedia.org/wiki/MT940). This library is only meant for collecting the transactions. No bank statements or balance (previous or new) is determined.
 
