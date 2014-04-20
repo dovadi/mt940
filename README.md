@@ -1,6 +1,7 @@
 MT940 (Dutch banks only)
 ========================
 
+[![Gem Version](https://badge.fury.io/rb/mt940.svg)](http://badge.fury.io/rb/mt940)
 
 [![Travis CI](https://secure.travis-ci.org/dovadi/mt940.png)](http://travis-ci.org/dovadi/mt940)
 
