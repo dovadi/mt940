@@ -12,3 +12,10 @@ end
 
 task :default => :test
 
+task :console do
+  require 'irb'
+  require 'irb/completion'
+  require 'mt940'
+  ARGV.clear
+  IRB.start
+end
