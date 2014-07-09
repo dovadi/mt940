@@ -2,10 +2,6 @@ class MT940::Abnamro < MT940::Base
 
   private
 
-  def parse_tag_61
-    super(/^:61:(\d{6})\d{4}(C|D)(\d+),(\d{0,2})/)
-  end
-
   def parse_line_before_sepa
     @description = @line.gsub(/>\d{2}/,'').strip
     if @description.match(/^(GIRO)\s+(\d+)(.+)/)

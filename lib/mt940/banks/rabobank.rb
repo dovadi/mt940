@@ -13,13 +13,18 @@ class MT940::Rabobank < MT940::Base
   end
 
   def parse_tag_61
-    match = super(/^:61:(\d{6})(C|D)(\d+),(\d{0,2})\w{4}\w{1}(\d{9}|NONREF|EREF)(.*)$/)
+    match = super(%r{^:61:(?<value_date>\d{6})
+                          (?<debit_credit>C|D)
+                          (?<amount_left>\d+),(?<amount_right>\d{0,2})
+                          \w{4}\w{1}
+                          (?<contra_1>\d{9}|NONREF|EREF)
+                          (?<contra_2>.*)$}x)
     if match
       if @sepa
-        @transaction.contra_account = match[6].strip
+        @transaction.contra_account = match["contra_2"].strip
       else
-        @transaction.contra_account = match[5].strip
-        @transaction.contra_account_owner = match[6].strip
+        @transaction.contra_account = match["contra_1"].strip
+        @transaction.contra_account_owner = match["contra_2"].strip
       end
     end
   end

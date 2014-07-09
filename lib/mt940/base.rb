@@ -55,11 +55,14 @@ module MT940
     end
 
     def parse_tag_61(pattern = nil)
-      pattern = pattern || /^:61:(\d{6})(C|D)(\d+),(\d{0,2})/
+      pattern ||= %r{^:61:(?<value_date>\d{6})
+                          (?<entry_date>\d{4})?
+                          (?<debit_credit>C|D)
+                          (?<amount_left>\d+),(?<amount_right>\d{0,2})}x
       match = @line.match(pattern)
       if match
         @transaction = create_transaction(match)
-        @transaction.date = parse_date(match[1])
+        @transaction.date = parse_date(match["value_date"])
       end
       match
     end
@@ -84,11 +87,11 @@ module MT940
     end
 
     def create_transaction(match)
-      type = match[2] == 'D' ? -1 : 1
-      MT940::Transaction.new(:bank_account => @bank_account,
-                             :amount       => type * (match[3] + '.' + match[4]).to_f,
-                             :bank         => @bank,
-                             :currency     => @currency)
+      type = match["debit_credit"] == "D" ? -1 : 1
+      MT940::Transaction.new(bank_account: @bank_account,
+                             amount:       type * (match["amount_left"] + '.' + match["amount_right"]).to_f,
+                             bank:         @bank,
+                             currency:     @currency)
     end
 
     def parse_date(string)
