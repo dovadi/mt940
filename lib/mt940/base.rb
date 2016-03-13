@@ -75,7 +75,7 @@ module MT940
     end
 
     def hashify_description(description)
-      hash = {} 
+      hash = {}
       description.gsub!(/[^A-Z]\/[^A-Z]/,' ') #Remove single forward slashes '/', which are not part of a swift code
       description[1..-1].split('/').each_slice(2).each do |first, second|
         hash[first] = second
