@@ -26,7 +26,7 @@ module MT940
         instance.parse
         @transactions = instance.transactions
       rescue NoMethodError => exception
-         if exception.message == "undefined method `new' for nil:NilClass"
+        if exception.message == "undefined method `new' for nil:NilClass"
           raise UnknownBank.new('Could not determine bank!') 
         else
           raise exception
