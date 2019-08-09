@@ -21,25 +21,27 @@ module MT940
     def parse
       @lines.each do |line|
         @line = line.strip.gsub(/\n|\r/,'').gsub(/\s{2,}/,' ')
-        if @line.match(/^:(\d{2}F?):/)
-          case $1
-          when '25'
-            parse_tag_25
-          when '60F'
-            parse_tag_60F
-          when '61'
-            parse_tag_61
-            @transactions << @transaction if @transaction
-          when '86'
-            parse_tag_86 if @transaction
-          when '62F'
-            @transaction = nil #Ignore 'eindsaldo'
-          end
-        end
+        parse_tag($1) if @line.match(/^:(\d{2}F?):/)
       end
     end
 
     private
+
+    def parse_tag(tag)
+      case tag
+      when '25'
+        parse_tag_25
+      when '60F'
+        parse_tag_60F
+      when '61'
+        parse_tag_61
+        @transactions << @transaction if @transaction
+      when '86'
+        parse_tag_86 if @transaction
+      when '62F'
+        @transaction = nil #Ignore 'eindsaldo'
+      end
+    end
 
     def begin_of_line?(line)
       line.match(/^:|^940|^0000\s|^ABNA/)
