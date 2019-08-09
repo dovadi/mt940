@@ -1,4 +1,4 @@
-require 'helper'
+require 'test_helper'
 
 class TestMt940Ing < Test::Unit::TestCase
 
@@ -23,7 +23,7 @@ class TestMt940Ing < Test::Unit::TestCase
       end
 
       should 'have an amount' do
-        assert_equal -25.03, @transaction.amount
+        assert_equal(-25.03, @transaction.amount)
       end
 
       should 'have a currency' do

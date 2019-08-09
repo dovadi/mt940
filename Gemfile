@@ -1,12 +1,11 @@
 source "http://rubygems.org"
 
-gem "codeclimate-test-reporter", group: :test, require: nil
+gem "codeclimate-test-reporter", group: :test, require: false
 
 group :development, :test do
-  gem 'rake', '~> 10.1.1'
-  gem 'shoulda'
-  gem 'guard-test'
-  gem 'awesome_print'
+  gem 'rake', '~> 12.3.3'
+  gem 'test-unit', '~> 3.3.3'
+  gem 'shoulda', '~> 3.6.0'
 end
 
 gemspec

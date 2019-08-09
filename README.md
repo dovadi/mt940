@@ -68,5 +68,5 @@ Contributing to MT940
 Copyright
 ==========
 
-Copyright (c) 2014 Frank Oxener. See LICENSE.txt for further details.
+Copyright (c) 2019 Frank Oxener. See LICENSE.txt for further details.
 

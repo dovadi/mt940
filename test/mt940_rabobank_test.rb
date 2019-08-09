@@ -1,4 +1,4 @@
-require 'helper'
+require 'test_helper'
 
 class TestMt940Rabobank < Test::Unit::TestCase
 
@@ -37,7 +37,7 @@ class TestMt940Rabobank < Test::Unit::TestCase
       end
 
       should 'have an amount' do
-        assert_equal -1213.28, @transaction.amount
+        assert_equal(-1213.28, @transaction.amount)
       end
 
       should 'have a currency' do
@@ -99,7 +99,7 @@ class TestMt940Rabobank < Test::Unit::TestCase
       end
 
       should 'have an amount' do
-        assert_equal -127.50, @transaction.amount
+        assert_equal(-127.50, @transaction.amount)
       end
 
       should 'have a currency' do

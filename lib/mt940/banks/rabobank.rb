@@ -1,5 +1,11 @@
 class MT940::Rabobank < MT940::Base
 
+  def initialize(file)
+    @sepa = false
+    @description = nil
+    super(file)
+  end
+
   private
 
   def parse_tag_25

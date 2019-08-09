@@ -42,7 +42,7 @@ module MT940
     private
 
     def begin_of_line?(line)
-      line.match /^:|^940|^0000\s|^ABNA/
+      line.match(/^:|^940|^0000\s|^ABNA/)
     end
 
     def parse_tag_25

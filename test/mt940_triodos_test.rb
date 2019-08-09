@@ -1,4 +1,4 @@
-require 'helper'
+require 'test_helper'
 
 class TestMt940Triodos < Test::Unit::TestCase
 
@@ -24,7 +24,7 @@ class TestMt940Triodos < Test::Unit::TestCase
       end
 
       should 'have an amount' do
-        assert_equal -15.7, @transaction.amount
+        assert_equal(-15.7, @transaction.amount)
       end
 
       should 'have a currency' do
@@ -73,7 +73,7 @@ class TestMt940Triodos < Test::Unit::TestCase
       end
 
       should 'have an amount' do
-        assert_equal -10.00, @transaction.amount
+        assert_equal(-10.00, @transaction.amount)
       end
 
       should 'have a currency' do

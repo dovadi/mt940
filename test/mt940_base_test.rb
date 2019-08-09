@@ -1,4 +1,4 @@
-require 'helper'
+require 'test_helper'
 
 class TestMt940Base < Test::Unit::TestCase
 
@@ -21,7 +21,7 @@ class TestMt940Base < Test::Unit::TestCase
     should 'raise an exception if the file does not exist' do
       file_name = File.dirname(__FILE__) + '/fixtures/123.txt'
       assert_raise Errno::ENOENT do
-        file = MT940::Parser.new(file_name)
+        MT940::Parser.new(file_name)
       end
     end
 
