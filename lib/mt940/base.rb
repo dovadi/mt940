@@ -35,11 +35,10 @@ module MT940
         parse_tag_60F
       when '61'
         parse_tag_61
-        @transactions << @transaction if @transaction
       when '86'
-        parse_tag_86 if @transaction
+        parse_tag_86
       when '62F'
-        @transaction = nil #Ignore 'eindsaldo'
+        parse_tag_62F
       end
     end
 
@@ -63,10 +62,12 @@ module MT940
         @transaction = create_transaction(match)
         @transaction.date = parse_date(match[1])
       end
+      @transactions << @transaction if @transaction
       match
     end
 
     def parse_tag_86
+      return unless @transaction
       if @line.match(/^:86:\s?(.*)$/)
         @line = $1.strip
         @description, @contra_account = nil, nil
@@ -74,6 +75,10 @@ module MT940
         @transaction.contra_account = @contra_account
         @transaction.description    = @description || @line
       end
+    end
+
+    def parse_tag_62F
+      @transaction = nil
     end
 
     def hashify_description(description)
