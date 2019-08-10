@@ -1,15 +1,14 @@
 require 'test_helper'
 
 class TestMt940Base < Test::Unit::TestCase
-
   context 'MT940::Base' do
     should 'read the transactions with the handle to the mt940 file itself' do
       file_name = File.dirname(__FILE__) + '/fixtures/ing.txt'
       assert_equal 6, MT940::Parser.new(file_name).transactions.size
     end
 
-    #Tempfile is used by Paperclip, so the following will work:
-    #MT940::Base.transactions(@mt940_file.attachment.to_file)
+    # Tempfile is used by Paperclip, so the following will work:
+    # MT940::Base.transactions(@mt940_file.attachment.to_file)
     should 'read the transactions with the handle of a Tempfile' do
       file = Tempfile.new('temp')
       file.write(':940:')
@@ -27,7 +26,7 @@ class TestMt940Base < Test::Unit::TestCase
 
     should 'raise an NoFileGiven if a wrong argument was given' do
       assert_raise MT940::NoFileGiven do
-        MT940::Parser.new(Hash.new)
+        MT940::Parser.new({})
       end
     end
   end
@@ -40,5 +39,4 @@ class TestMt940Base < Test::Unit::TestCase
       end
     end
   end
-
 end

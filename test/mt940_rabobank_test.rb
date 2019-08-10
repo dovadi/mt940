@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class TestMt940Rabobank < Test::Unit::TestCase
-
   context 'Before SEPA' do
     setup do
       file_name = File.dirname(__FILE__) + '/fixtures/rabobank.txt'
@@ -13,7 +12,6 @@ class TestMt940Rabobank < Test::Unit::TestCase
     end
 
     context 'Transaction' do
-
       setup do
         @transaction = @transactions.first
       end
@@ -49,19 +47,20 @@ class TestMt940Rabobank < Test::Unit::TestCase
       end
 
       should 'have a description' do
-        assert_equal 'Terugboeking NIET AKKOORD MET AFSCHRIJVING KOSTEN KINDEROPVANG JUNI 20095731', @transaction.description
+        assert_equal(
+          'Terugboeking NIET AKKOORD MET AFSCHRIJVING KOSTEN KINDEROPVANG JUNI 20095731',
+          @transaction.description
+        )
       end
 
       should 'have a date' do
-        assert_equal Date.new(2011,5,27), @transaction.date
+        assert_equal Date.new(2011, 5, 27), @transaction.date
       end
 
       should 'return its bank' do
         assert_equal 'Rabobank', @transaction.bank
       end
-
     end
-
   end
 
   context 'After SEPA' do
@@ -75,7 +74,6 @@ class TestMt940Rabobank < Test::Unit::TestCase
     end
 
     context 'Transaction' do
-
       setup do
         @transaction = @transactions.first
       end
@@ -115,15 +113,12 @@ class TestMt940Rabobank < Test::Unit::TestCase
       end
 
       should 'have a date' do
-        assert_equal Date.new(2013,4,3), @transaction.date
+        assert_equal Date.new(2013, 4, 3), @transaction.date
       end
 
       should 'return its bank' do
         assert_equal 'Rabobank', @transaction.bank
       end
-
     end
-
   end
-
 end

@@ -1,7 +1,5 @@
 module MT940
-
   class Transaction
-
     attr_accessor :bank_account, :contra_account, :amount, :description, :contra_account_owner, :date, :bank, :currency
 
     def initialize(attributes = {})
@@ -14,7 +12,5 @@ module MT940
       @contra_account_name = attributes[:contra_account_owner]
       @currency            = attributes[:currency]
     end
-
   end
-
 end

@@ -1,5 +1,4 @@
-$:.unshift(File.dirname(__FILE__)) unless
-  $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+$LOAD_PATH.unshift(__dir__) unless $LOAD_PATH.include?(__dir__) || $LOAD_PATH.include?(File.expand_path(_dir__))
 
 require 'tempfile'
 require 'mt940/version'

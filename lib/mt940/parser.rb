@@ -1,42 +1,33 @@
 module MT940
-
-  class NoFileGiven < Exception; end
-  class UnknownBank < Exception; end
+  class NoFileGiven < RuntimeError; end
+  class UnknownBank < RuntimeError; end
 
   class Parser
-
     attr_accessor :transactions
 
     def initialize(file)
-      file = File.open(file) if file.is_a?(String) 
-      if file.is_a?(File) || file.is_a?(Tempfile)
-        process(file)
-        file.close
-      else
-        raise NoFileGiven.new('No file is given!')
-      end
+      file = File.open(file) if file.is_a?(String)
+      raise NoFileGiven, 'No file is given!' unless file.is_a?(File) || file.is_a?(Tempfile)
+
+      process(file)
+      file.close
     end
 
     private
 
     def process(file)
-      begin
-        bank_class = determine_bank_class(file)
-        instance   = bank_class.new(file)
-        instance.parse
-        @transactions = instance.transactions
-      rescue NoMethodError => exception
-        if exception.message == "undefined method `new' for nil:NilClass"
-          raise UnknownBank.new('Could not determine bank!') 
-        else
-          raise exception
-        end
-      end
+      bank_class = determine_bank_class(file)
+      instance   = bank_class.new(file)
+      instance.parse
+      @transactions = instance.transactions
+    rescue NoMethodError => e
+      raise UnknownBank, 'Could not determine bank!' if e.message == "undefined method `new' for nil:NilClass"
+
+      raise e
     end
 
     def determine_bank_class(file)
-      first_line = file.readline
-      case first_line
+      case file.readline
       when /^:940:/
         Rabobank
       when /INGBNL/
@@ -47,7 +38,5 @@ module MT940
         Triodos
       end
     end
-
   end
-
 end

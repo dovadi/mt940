@@ -1,24 +1,24 @@
-class MT940::Ing < MT940::Base
+module MT940
+  class Ing < Base
+    private
 
-  private
+    def parse_line_before_sepa
+      pattern = Regexp.new "(#{BBAN_PATTERN})(.+)"
+      return unless @line.match(pattern)
 
-  def parse_line_before_sepa
-    pattern = Regexp.new "(#{MT940::BBAN_PATTERN})(.+)"
-    if @line.match(pattern)
-      @description    = $2.strip
-      @contra_account = $1[/[^0+]\d*/]
+      @description    = Regexp.last_match(2).strip
+      @contra_account = Regexp.last_match(1)[/[^0+]\d*/]
+    end
+
+    def parse_line_after_sepa
+      return unless @line.match(SEPA_PATTERN)
+
+      @contra_account = Regexp.last_match(1)
+      @description    = Regexp.last_match(4).strip
+    end
+
+    def sepa?
+      @line.match(SEPA_PATTERN)
     end
   end
-
-  def parse_line_after_sepa
-    if @line.match(MT940::SEPA_PATTERN)
-      @contra_account = $1
-      @description    = $4.strip
-    end
-  end
-
-  def sepa?
-    @line.match(MT940::SEPA_PATTERN)
-  end
-
 end

@@ -1,19 +1,17 @@
 require 'test_helper'
 
 class TestMt940Ing < Test::Unit::TestCase
-
   context 'Before SEPA' do
     setup do
       file_name = File.dirname(__FILE__) + '/fixtures/ing.txt'
       @transactions = MT940::Parser.new(file_name).transactions
     end
-    
+
     should 'have the correct number of transactions' do
       assert_equal 6, @transactions.size
     end
 
     context 'Transaction' do
-
       setup do
         @transaction = @transactions.first
       end
@@ -31,7 +29,7 @@ class TestMt940Ing < Test::Unit::TestCase
       end
 
       should 'have a date' do
-        assert_equal Date.new(2010,7,22), @transaction.date
+        assert_equal Date.new(2010, 7, 22), @transaction.date
       end
 
       should 'return its bank' do
@@ -45,7 +43,6 @@ class TestMt940Ing < Test::Unit::TestCase
       should 'return the contra_account' do
         assert_equal '123456789', @transactions.last.contra_account
       end
-
     end
   end
 
@@ -55,13 +52,12 @@ class TestMt940Ing < Test::Unit::TestCase
       file_name = File.dirname(__FILE__) + '/fixtures/ing_sepa.txt'
       @transactions = MT940::Parser.new(file_name).transactions
     end
-    
+
     should 'have the correct number of transactions' do
       assert_equal 9, @transactions.size
     end
 
     context 'Transaction' do
-
       setup do
         @transaction = @transactions.first
       end
@@ -79,7 +75,7 @@ class TestMt940Ing < Test::Unit::TestCase
       end
 
       should 'have a date' do
-        assert_equal Date.new(2012,8,10), @transaction.date
+        assert_equal Date.new(2012, 8, 10), @transaction.date
       end
 
       should 'return its bank' do
@@ -88,7 +84,10 @@ class TestMt940Ing < Test::Unit::TestCase
 
       context 'With an iban number in :86' do
         should 'have a description' do
-          assert_equal 'J. Janssen 20120123456789 Factuurnr 123456 Klantnr 00123', @transactions[1].description
+          assert_equal(
+            'J. Janssen 20120123456789 Factuurnr 123456 Klantnr 00123',
+            @transactions[1].description
+          )
         end
 
         should 'return the contra_account' do
@@ -98,15 +97,16 @@ class TestMt940Ing < Test::Unit::TestCase
 
       context 'Without an iban number in :86' do
         should 'have a description' do
-          assert_equal 'Reguliere aflossingStarters Investeri 11.22.33.444 Rest hoofdsom EUR 99.000,00', @transactions[8].description
+          assert_equal(
+            'Reguliere aflossingStarters Investeri 11.22.33.444 Rest hoofdsom EUR 99.000,00',
+            @transactions[8].description
+          )
         end
 
         should 'return the contra_account' do
           assert_equal nil, @transactions[8].contra_account
         end
       end
-
     end
   end
-
 end

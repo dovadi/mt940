@@ -1,20 +1,17 @@
 require 'test_helper'
 
 class TestMt940Triodos < Test::Unit::TestCase
-
   context 'Before sepa' do
-
     setup do
       file_name = File.dirname(__FILE__) + '/fixtures/triodos.txt'
       @transactions = MT940::Parser.new(file_name).transactions
     end
-    
+
     should 'have the correct number of transactions' do
       assert_equal 2, @transactions.size
     end
 
     context 'Transaction' do
-
       setup do
         @transaction = @transactions.first
       end
@@ -32,11 +29,14 @@ class TestMt940Triodos < Test::Unit::TestCase
       end
 
       should 'have a description' do
-        assert_equal 'ALGEMENE TUSSENREKENING KOSTEN VAN 01-10-2010 TOT EN MET 31-12-2010', @transaction.description
+        assert_equal(
+          'ALGEMENE TUSSENREKENING KOSTEN VAN 01-10-2010 TOT EN MET 31-12-2010',
+          @transaction.description
+        )
       end
 
       should 'have a date' do
-        assert_equal Date.new(2011,1,1), @transaction.date
+        assert_equal Date.new(2011, 1, 1), @transaction.date
       end
 
       should 'return its bank' do
@@ -46,24 +46,20 @@ class TestMt940Triodos < Test::Unit::TestCase
       should 'return the contra_account' do
         assert_equal '987654321', @transaction.contra_account
       end
-
     end
-
   end
 
   context 'After sepa' do
-
     setup do
       file_name = File.dirname(__FILE__) + '/fixtures/triodos_sepa.txt'
       @transactions = MT940::Parser.new(file_name).transactions
     end
-    
+
     should 'have the correct number of transactions' do
       assert_equal 8, @transactions.size
     end
 
     context 'Transaction' do
-
       setup do
         @transaction = @transactions.first
       end
@@ -81,9 +77,10 @@ class TestMt940Triodos < Test::Unit::TestCase
       end
 
       context 'description' do
-
         setup do
-          @description = 'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN  PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE  TRANSACTIE'
+          @description =
+            'TENAAMSTELLING TEGENREKENING EN ADRES TEGENREKENING EN  '\
+            'PLAATS TEGENREKENING EN EEN LANGE OMSCHRIJVING VAN DE  TRANSACTIE'
         end
 
         should 'have the description in case of BBAN' do
@@ -93,11 +90,10 @@ class TestMt940Triodos < Test::Unit::TestCase
         should 'have the description in case of IBAN' do
           assert_equal @description, @transactions[2].description
         end
-
       end
 
       should 'have a date' do
-        assert_equal Date.new(2012,11,23), @transaction.date
+        assert_equal Date.new(2012, 11, 23), @transaction.date
       end
 
       should 'return its bank' do
@@ -105,7 +101,6 @@ class TestMt940Triodos < Test::Unit::TestCase
       end
 
       context 'contra_account' do
-
         should 'return the contra_account in case of a BBAN' do
           assert_equal '555555555', @transaction.contra_account
         end
@@ -113,11 +108,7 @@ class TestMt940Triodos < Test::Unit::TestCase
         should 'return the contra_account in case of a IBAN' do
           assert_equal 'AA99BBBB0555555555', @transactions[2].contra_account
         end
-
       end
-    
     end
-
   end
-
 end

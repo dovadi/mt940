@@ -1,21 +1,18 @@
 require 'test_helper'
 
 class TestMt940Abnamro < Test::Unit::TestCase
-
   context 'Before SEPA' do
-
     setup do
       file_name = File.dirname(__FILE__) + '/fixtures/abnamro.txt'
       @transactions = MT940::Parser.new(file_name).transactions
     end
-    
+
     should 'have the correct number of transactions' do
       assert_equal 10, @transactions.size
     end
 
     context 'Transaction' do
-
-      setup do 
+      setup do
         @transaction = @transactions.first
       end
 
@@ -29,7 +26,10 @@ class TestMt940Abnamro < Test::Unit::TestCase
 
       context 'Description' do
         should 'have the correct description in case of a GIRO account' do
-          assert_equal ' KPN - DIGITENNE BETALINGSKENM. 0000000421886595314606715 BETREFT FACTUUR D.D. 20-05-2011INCL. 1,44 BTW', @transaction.description
+          assert_equal(
+            ' KPN - DIGITENNE BETALINGSKENM. 0000000421886595314606715 BETREFT FACTUUR D.D. 20-05-2011INCL. 1,44 BTW',
+            @transaction.description
+          )
         end
 
         should 'have the correct description in case of a regular bank' do
@@ -38,7 +38,7 @@ class TestMt940Abnamro < Test::Unit::TestCase
       end
 
       should 'have a date' do
-        assert_equal Date.new(2011,5,24), @transaction.date
+        assert_equal Date.new(2011, 5, 24), @transaction.date
       end
 
       should 'return its bank' do
@@ -59,23 +59,20 @@ class TestMt940Abnamro < Test::Unit::TestCase
         end
       end
     end
-
   end
 
   context 'After SEPA' do
-
     setup do
       file_name = File.dirname(__FILE__) + '/fixtures/abnamro_sepa.txt'
       @transactions = MT940::Parser.new(file_name).transactions
     end
-    
+
     should 'have the correct number of transactions' do
       assert_equal 1, @transactions.size
     end
 
     context 'Transaction' do
-
-      setup do 
+      setup do
         @transaction = @transactions.first
       end
 
@@ -84,7 +81,7 @@ class TestMt940Abnamro < Test::Unit::TestCase
       end
 
       should 'have a date' do
-        assert_equal Date.new(2012,9,27), @transaction.date
+        assert_equal Date.new(2012, 9, 27), @transaction.date
       end
 
       should 'have an amount' do
@@ -106,10 +103,6 @@ class TestMt940Abnamro < Test::Unit::TestCase
       should 'have the correct description in case of a regular bank' do
         assert_equal 'Dit zijn de omschrijvingsregels', @transactions.last.description
       end
-
     end
-
   end
-
-
 end
