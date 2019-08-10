@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-ruby '2.6.3'
 
 gem 'codeclimate-test-reporter', group: :test, require: false
 
